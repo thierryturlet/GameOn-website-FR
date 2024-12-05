@@ -4,17 +4,21 @@
   --modal-duration: 0.8s;
 }
 * {
+  font-size: 16px;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 /* Landing Page */
 
+
+
+
 body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-image: url("background.png");
+  background-image: url( "bg_img.jpg" );
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -527,3 +531,14 @@ footer {
   }
 }
 
+#popup {
+  color: black;
+  background-color: white;
+  width: 50%;
+  height: 50%;
+  position:absolute;
+  left: 25%;
+  top: 25%;
+  display:none;
+  opacity: 95%;
+}
