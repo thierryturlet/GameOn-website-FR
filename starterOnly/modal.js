@@ -28,7 +28,7 @@ const modal = document.querySelector(".bground");
 closeBtn.addEventListener("click", () => {
   console.log("Fermeture de la modale");
   modal.style.display = "none"; // Ferme la modale en la cachant
-  document.getElementById("popup").style.display = "block";
+  //document.getElementById("popup").style.display = "block";
 });
 
 //*pour les messages de validation*//
@@ -43,6 +43,13 @@ form.addEventListener("submit", (event) => {
   let formulaireValide = true
   
 
+  const closeBtn = document.querySelector("#popup .close");
+  const popup = document.querySelector("#popup");
+  
+  closeBtn.addEventListener("click", () => {
+    popup.style.display = "none";
+  });
+  
   let inputPrenom = document.getElementById("first");
   if (!verifierInputText(inputPrenom)) {
     afficherMessageErreur(
@@ -116,12 +123,16 @@ form.addEventListener("submit", (event) => {
   }
 
   if (formulaireValide) {
+    console.log("test 3 prb affichage")
     afficherValidationFormulaire();
   }
   // si formulaire valide = true alors on valide le formulaire sinon on ne le valide pas
   //si formulaire est valide alors je ferme la popup du formulaire et j ouvre une nouvelle popup de confirmation 
   
   console.log("Conditions acceptées");
+
+
+  
 
 });
 
@@ -150,10 +161,17 @@ function afficherMessageErreur(input, message = "") {
   }
 
   if (!verifierInputText(input)) {
+    input.classList.add("invalid"); // Ajouter un contour rouge
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
     messageErreur.textContent = message;
     divParent.appendChild(messageErreur);
+    
+   
+  }
+  else{
+    input.classList.remove("invalid"); // Retirer le contour rouge
+
   }
 }
 
@@ -170,6 +188,7 @@ function afficherMessageErreurCheckBox(cb, message = "") {
   }
 
   if (!verifierCondition()) {
+    input.classList.add("invalid"); // Ajouter un contour rouge
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
     messageErreur.classList.add("messageErreur");
@@ -195,6 +214,7 @@ function afficherMessageErreurRadio(rb, message = "") {
   }
 
   if (!verifierInputBtnRadio(rb)) {
+
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
     messageErreur.classList.add("messageErreur")
@@ -211,13 +231,16 @@ function verifierInputEmail(input) {
     console.log(valeur);
     return true; // L'email est valide
   } else {
+    input.classList.add("invalid"); // Ajouter un contour rouge
     console.log("Adresse email invalide");
     return false; // L'email est invalide
   }
 }
 function verifierInputBirthDate(value) {
+  
   if (value === "") {
     console.log("Champ de date vide.");
+    document.getElementById("birthdate").classList.add("invalid"); 
     return false; // Retourne false si le champ est vide
   }
 
@@ -230,9 +253,11 @@ function verifierInputTournoi(input) {
   console.log("Valeur entrée : ", valeur); // Afficher la valeur saisie
 
   if (valeur >= 0 && valeur <= 99) {
+    input.classList.remove("invalid");
     console.log("Conforme"); // Afficher "conforme" si la valeur est valide
     return true; // Retourner true si valide
   } else {
+    input.classList.add("invalid"); // Ajouter un contour rouge
     console.log("Non conforme"); // Afficher "non conforme" si invalide
     return false; // Retourner false si invalide
   }
@@ -267,23 +292,28 @@ function verifierCondition() {
 
 function afficherValidationFormulaire() {
   // Sélectionne le conteneur du message
-  const messageContainer = document.querySelector("#popup");
+ 
  
   // Sélectionne la modale
   const modal = document.querySelector(".bground");
-
+ 
   // Vérifie si les éléments requis existent
   if (!modal || !closeBtn) {
     console.error("La modale ou son bouton de fermeture n'existent pas dans le DOM.");
-    return;
-  }
+    return false;
+  } else {
+  
+  form.reset(); //vide le formulaire
   modal.style.display = "none";
-
-    // Affiche le message de succès
-    modal.style.display = "none";// Ferme la modale
-    messageContainer.textContent = "Formulaire envoyé avec succès !";
-    messageContainer.style.color = "black";
-    messageContainer.style.display = "block";
+  const messageContainer = document.querySelector("#popup");
+  messageContainer.style.color = "white";
+  messageContainer.style.display = "block";
+  // Affiche le message de succès
+  messageContainer.textContent = "Merci pour votre participation";
+  
+}
+   
+    
   
 }
 
@@ -293,6 +323,7 @@ function afficherValidationFormulaire() {
 //* si on a un message d erreur on corrige l erreur et on clique sur verifier le message erreur disparait
 
 //bonus faire le champ email
+
 
 //* recuperation du champs nom
 // verifier si le contenu a au moins deux caracteres

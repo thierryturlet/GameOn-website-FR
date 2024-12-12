@@ -18,7 +18,6 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-image: url( "bg_img.jpg" );
   font-family: var(--font-default);
   font-size: 18px;
   max-width: 1300px;
@@ -531,14 +530,66 @@ footer {
   }
 }
 
+.text-control.invalid {
+  border: 2px solid red;
+
+}
+
+
 #popup {
   color: black;
-  background-color: white;
-  width: 50%;
-  height: 50%;
-  position:absolute;
-  left: 25%;
-  top: 25%;
-  display:none;
-  opacity: 95%;
+  background-color: black;
+  text-align: center;
+  
+  width: 30%;  /* Plus large que 25% pour plus de visibilité */
+  height: 653px;  /* Laisse la hauteur s'ajuster automatiquement */
+  position: fixed;  /* Utilisation de fixed pour centrer par rapport à la fenêtre */
+  left: 50%;  /* Centré horizontalement */
+  top: 50%;  /* Centré verticalement */
+  transform: translate(-50%, -50%);  /* Ajuste la position exacte */
+  display: none;  /* Assurez-vous que la popup soit cachée au début */
+  opacity: 100%;
+  border-radius: 10px;  /* Augmenter l'arrondi des coins */
+  padding: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Ombre portée pour l'effet fenêtre */
+  border: 1px solid #ccc;  /* Bordure claire autour de la popup */
+  z-index: 1000;  /* Assurer qu'elle soit au-dessus des autres éléments */
 }
+#popup p {
+  font-size: 1.5rem;  /* Augmenter la taille du texte */
+  font-weight: bold;  /* Mettre le texte en gras */
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between ;
+
+
+}
+#popup .close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 32px;
+  height: 32px;
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(0.7);
+}
+
+#popup .close:before,
+#popup .close:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 3px;
+  background-color: #fff;
+}
+
+#popup .close:before {
+  transform: rotate(45deg);
+}
+
+#popup .close:after {
+  transform: rotate(-45deg);
+}
+
