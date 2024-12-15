@@ -58,7 +58,8 @@
               <div class="formData">
                 <label>Nom</label><br>
                 <input class="text-control" type="text" id="last" name="last"/><br>
-              </div>
+              </div>  
+              
               <div class="formData">
                 <label>E-mail</label><br>
                 <input class="text-control" type="email" id="email" name="email"/><br>
@@ -122,8 +123,9 @@
         </div>
       </div>
       <div id="popup">
-        <span class="close"></span>
+        <span class="close" onclick="closePopup()"></span>
         <p>Merci pour votre inscription</p>
+        <button class="btn-close" onclick="closePopup()">Fermer</button>
       </div>
     </main>
     <footer>
