@@ -26,7 +26,7 @@ const modal = document.querySelector(".bground");
 
 // Ajoute un gestionnaire d'événement pour la croix
 closeBtn.addEventListener("click", () => {
-  console.log("Fermeture de la modale");
+ 
   modal.style.display = "none"; // Ferme la modale en la cachant
   
 });
@@ -37,11 +37,18 @@ setupCloseButton()
 //*pour les messages de validation*//
 
 let form = document.querySelector("form");
-console.log(form);
+
+let inputPrenom = document.getElementById("first");
+let inputNom = document.getElementById("last");
+let inputEmail = document.getElementById("email");
+let inputBirthDate = document.getElementById("birthdate");
+let inputTournoi = document.getElementById("quantity");
+let inputBtnRadio = document.querySelectorAll("input[type=radio]");
+let inputCondition = document.getElementById("checkbox1");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  console.log("verification des champs");
+
 
   let formulaireValide = true;
 
@@ -52,7 +59,6 @@ form.addEventListener("submit", (event) => {
     popup.style.display = "none";
   });
 
-  let inputPrenom = document.getElementById("first");
   if (!verifierInputText(inputPrenom)) {
     afficherMessageErreur(
       inputPrenom,
@@ -63,7 +69,7 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputPrenom);
   }
 
-  let inputNom = document.getElementById("last");
+  
   if (!verifierInputText(inputNom)) {
     afficherMessageErreur(
       inputNom,
@@ -74,15 +80,15 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputNom);
   }
 
-  let inputEmail = document.getElementById("email");
+  
   if (!verifierInputEmail(inputEmail)) {
     afficherMessageErreur(inputEmail, "Votre Email n'est pas valide.");
+    console.log("erreur")
     formulaireValide = false;
   } else {
     afficherMessageErreur(inputEmail);
   }
 
-  let inputBirthDate = document.getElementById("birthdate");
   if (!verifierInputBirthDate(inputBirthDate.value)) {
     afficherMessageErreur(inputBirthDate, "Votre date n'est pas valide.");
     formulaireValide = false;
@@ -90,7 +96,7 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputBirthDate);
   }
 
-  let inputTournoi = document.getElementById("quantity");
+  
   if (!verifierInputTournoi(inputTournoi)) {
     afficherMessageErreur(inputTournoi, "il doit etre inferieure a 99");
     formulaireValide = false;
@@ -98,7 +104,7 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputTournoi);
   }
 
-  let inputBtnRadio = document.querySelectorAll("input[type=radio]");
+ 
   if (!verifierInputBtnRadio(inputBtnRadio)) {
     afficherMessageErreurRadio(
       inputBtnRadio,
@@ -109,10 +115,10 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreurRadio(inputBtnRadio);
   }
 
-  let inputCondition = document.getElementById("checkbox1");
+  
 
   if (!verifierCondition()) {
-    console.log("Conditions non acceptées");
+   
     afficherMessageErreurCheckBox(
       inputCondition,
       "Vous devez accepter les conditions d'utilisation."
@@ -121,40 +127,39 @@ form.addEventListener("submit", (event) => {
   }
 
   if (formulaireValide) {
-    console.log("test 3 prb affichage");
+    
     afficherValidationFormulaire();
   }
   // si formulaire valide = true alors on valide le formulaire sinon on ne le valide pas
   //si formulaire est valide alors je ferme la popup du formulaire et j ouvre une nouvelle popup de confirmation
 
-  console.log("Conditions acceptées");
+
 });
 
 function verifierInputText(input) {
   let valeur = input.value;
 
   if (valeur.length >= 2) {
-    console.log(valeur);
+   
     return true;
   } else {
-    console.log("faux");
+    
     return false;
   }
 }
 
 function afficherMessageErreur(input, message = "") {
-  console.log("condition");
-  console.log(input);
+
 
   let divParent = input.closest("div");
-  console.log(divParent);
+  
 
   let messageExist = divParent.querySelector("span");
   if (messageExist) {
     messageExist.remove();
   }
 
-  if (!verifierInputText(input)) {
+  if (message) {
     input.classList.add("invalid"); // Ajouter un contour rouge
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
@@ -166,11 +171,11 @@ function afficherMessageErreur(input, message = "") {
 }
 
 function afficherMessageErreurCheckBox(cb, message = "") {
-  console.log("condition");
-  console.log(cb + "" + message);
+ 
+
 
   let divParent = cb.closest("div");
-  console.log(divParent);
+
 
   let messageExist = divParent.querySelector(".messageErreur");
   if (messageExist) {
@@ -195,12 +200,11 @@ function afficherMessageErreurCheckBox(cb, message = "") {
 }
 
 function afficherMessageErreurRadio(rb, message = "") {
-  console.log("condition");
-  console.log(rb);
+  
 
   // Trouver le conteneur parent des boutons radio
   let divParent = rb[0].closest("div");
-  console.log(divParent);
+
   let messageExist = divParent.querySelector(".messageErreur");
   if (messageExist) {
     messageExist.remove();
@@ -216,42 +220,44 @@ function afficherMessageErreurRadio(rb, message = "") {
 }
 
 function verifierInputEmail(input) {
-  console.log("verifierInputEmail");
+
   valeur = input.value;
-  let regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  let regexEmail =  /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   if (regexEmail.test(valeur)) {
-    console.log(valeur);
+    
     return true; // L'email est valide
   } else {
-    input.classList.add("invalid"); // Ajouter un contour rouge
-    console.log("Adresse email invalide");
-    return false; // L'email est invalide
-
+    afficherMessageErreur(input,"adresse email invalide")
     
+    return false; // L'email est invalide 
   }
 }
+
+
+
 function verifierInputBirthDate(value) {
   if (value === "") {
-    console.log("Champ de date vide.");
+   
     document.getElementById("birthdate").classList.add("invalid");
     return false; // Retourne false si le champ est vide
   }
 
-  console.log("Date saisie :", value);
+  
   return true; // Retourne true si une date est saisie
 }
 
 function verifierInputTournoi(input) {
   let valeur = parseInt(input.value); // Convertir la valeur en nombre
-  console.log("Valeur entrée : ", valeur); // Afficher la valeur saisie
+ 
 
   if (valeur >= 0 && valeur <= 99) {
     input.classList.remove("invalid");
-    console.log("Conforme"); // Afficher "conforme" si la valeur est valide
+   
     return true; // Retourner true si valide
   } else {
     input.classList.add("invalid"); // Ajouter un contour rouge
-    console.log("Non conforme"); // Afficher "non conforme" si invalide
+    
     return false; // Retourner false si invalide
   }
 }
@@ -259,12 +265,11 @@ function verifierInputTournoi(input) {
 function verifierInputBtnRadio(input) {
   for (let i = 0; i < input.length; i++) {
     if (input[i].checked) {
-      console.log("Case radio cochée :", input[i].value);
+    
       return true;
     }
   }
 
-  console.log("case radio non cochée");
   return false; // Aucune case n'est cochée
 }
 
@@ -272,11 +277,8 @@ function verifierCondition() {
   let checkbox1 = document.getElementById("checkbox1");
   let checkbox2 = document.getElementById("checkbox2");
 
-  console.log("Checkbox 1 cochée :", checkbox1.checked); // Affiche true ou false
-  console.log("Checkbox 2 cochée :", checkbox2.checked); // Affiche true ou false
 
   if (!checkbox1.checked) {
-    console.log("Vous devez accepter les conditions d'utilisation.");
     return false; // Ne pas valider le formulaire si checkbox1 n'est pas cochée
   }
 
@@ -291,9 +293,7 @@ function afficherValidationFormulaire() {
 
   // Vérifie si les éléments requis existent
   if (!modal || !closeBtn) {
-    console.error(
-      "La modale ou son bouton de fermeture n'existent pas dans le DOM."
-    );
+  
     return false;
   } else {
     form.reset(); //vide le formulaire
@@ -317,6 +317,16 @@ function setupCloseButton() {
 
   closeBtn.addEventListener("click", () => {
     form.reset();
+    afficherMessageErreur(inputPrenom)
+    afficherMessageErreur(inputNom)
+    afficherMessageErreur(inputBtnRadio)
+    afficherMessageErreur(inputBirthDate)
+    afficherMessageErreur(inputCondition)
+    afficherMessageErreur(inputEmail)
+    afficherMessageErreur(inputTournoi)
+
+    
+
   });
 }
 
@@ -339,10 +349,10 @@ document.getElementById("email").addEventListener("blur", (e) => {
 
 document.getElementById("quantity").addEventListener("blur", (e) => {
   if (!verifierInputTournoi(e.target)) {
-    console.log("Quantité invalide");
+   
     afficherMessageErreur(e.target, "Le nombre doit être compris entre 0 et 99.");
   } else {
-    console.log("Quantité valide");
+ 
     afficherMessageErreur(e.target); // Pour supprimer le message si la validation réussit
   }
 });
