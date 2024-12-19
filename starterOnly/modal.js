@@ -60,12 +60,14 @@ form.addEventListener("submit", (event) => {
   });
 
   if (!verifierInputText(inputPrenom)) {
+   
     afficherMessageErreur(
       inputPrenom,
       "le champ prénom doit avoir au moins deux caracteres. "
     );
     formulaireValide = false;
   } else {
+    console.log("Prénom valide :", inputPrenom.value);
     afficherMessageErreur(inputPrenom);
   }
 
@@ -129,21 +131,27 @@ form.addEventListener("submit", (event) => {
   if (formulaireValide) {
     
     afficherValidationFormulaire();
+    // Supprimez les messages d'erreur pour les champs valides
+    afficherMessageErreur(inputPrenom);
+    afficherMessageErreur(inputNom);
+    afficherMessageErreur(inputEmail);
+    afficherMessageErreur(inputBirthDate);
+    afficherMessageErreur(inputTournoi);
+    afficherMessageErreurRadio(inputBtnRadio);
+    afficherMessageErreurCheckBox(inputCondition);
   }
-  // si formulaire valide = true alors on valide le formulaire sinon on ne le valide pas
-  //si formulaire est valide alors je ferme la popup du formulaire et j ouvre une nouvelle popup de confirmation
-
+  
 
 });
 
 function verifierInputText(input) {
-  let valeur = input.value;
-
+  let valeur = input.value.trim();
+  
   if (valeur.length >= 2) {
-   
+    input.classList.remove("invalid"); // Retire 'invalid' si le champ est valide
     return true;
   } else {
-    
+    input.classList.add("invalid"); // Ajoute 'invalid' si le champ est invalide
     return false;
   }
 }
@@ -159,14 +167,17 @@ function afficherMessageErreur(input, message = "") {
     messageExist.remove();
   }
 
-  if (message) {
+  if (message ) {
     input.classList.add("invalid"); // Ajouter un contour rouge
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
     messageErreur.textContent = message;
-    divParent.appendChild(messageErreur);
-  } else {
+    divParent.appendChild(messageErreur);  
+  }
+
+  else {
     input.classList.remove("invalid"); // Retirer le contour rouge
+    console.log(`${input.id} : Classe 'invalid' retirée`);
   }
 }
 
@@ -317,14 +328,13 @@ function setupCloseButton() {
 
   closeBtn.addEventListener("click", () => {
     form.reset();
-    afficherMessageErreur(inputPrenom)
+
     afficherMessageErreur(inputNom)
     afficherMessageErreur(inputBtnRadio)
     afficherMessageErreur(inputBirthDate)
     afficherMessageErreur(inputCondition)
     afficherMessageErreur(inputEmail)
     afficherMessageErreur(inputTournoi)
-
     
 
   });
@@ -333,27 +343,45 @@ function setupCloseButton() {
 // permet d avertir que le champs est mal rempli avant d entamer un autre champ//
 
 document.getElementById("first").addEventListener("blur", (e) => {
-  verifierInputText(e.target);
-  afficherMessageErreur(e.target, "Le champ prénom doit avoir au moins deux caractères.");
+  if (verifierInputText(e.target)) {
+    afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
+  } else {
+    afficherMessageErreur(e.target, "Le champ prénom doit avoir au moins deux caractères.");
+  }
 });
 
 document.getElementById("last").addEventListener("blur", (e) => {
-  verifierInputText(e.target);
-  afficherMessageErreur(e.target, "Le champ nom doit avoir au moins deux caractères.");
+  if (verifierInputText(e.target)) {
+    afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
+  } else {
+    afficherMessageErreur(e.target, "Le champ nom doit avoir au moins deux caractères.");
+  }
 });
+
 
 document.getElementById("email").addEventListener("blur", (e) => {
-  verifierInputEmail(e.target);
-  afficherMessageErreur(e.target, "Votre email n'est pas valide.");
+  if (verifierInputEmail(e.target)) {
+    afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
+  } else {
+    afficherMessageErreur(e.target, "Votre email n'est pas valide.");
+  }
 });
 
-document.getElementById("quantity").addEventListener("blur", (e) => {
-  if (!verifierInputTournoi(e.target)) {
-   
-    afficherMessageErreur(e.target, "Le nombre doit être compris entre 0 et 99.");
+document.getElementById("birthdate").addEventListener("blur", (e) => {
+  if (verifierInputBirthDate(e.target.value)) {
+    afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
- 
-    afficherMessageErreur(e.target); // Pour supprimer le message si la validation réussit
+    afficherMessageErreur(e.target, "Votre date n'est pas valide.");
+  }
+});
+
+
+
+document.getElementById("quantity").addEventListener("blur", (e) => {
+  if (verifierInputTournoi(e.target)) {
+    afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
+  } else {
+    afficherMessageErreur(e.target, "Le nombre doit être compris entre 0 et 99.");
   }
 });
 
@@ -368,38 +396,3 @@ setupCloseButton();
 
 
 
-//* si on clique pls fois sur verifier le message d erreur n apparait qu une seule fois
-//* si on clique sur verifier alors que le formulaire est bien rempli le message d erreur n apparait pas
-//* si on a un message d erreur on corrige l erreur et on clique sur verifier le message erreur disparait
-
-//bonus faire le champ email
-
-//* recuperation du champs nom
-// verifier si le contenu a au moins deux caracteres
-// afficher message d erreur si c est pas le cas et masquer message si c est bon
-// faire meme chose pour champ prenom
-// bonus faire une fonction (verifierinputtexte) qui prend en parametre le input et retourne vrai ou faux si le message est bon ou pas
-// bonus2 faire une fonction pour afficher le message d erreur au bon endroit (en js)
-
-// monBouton = document.querySelector(".btn-submit");
-// monBouton.addEventListener("click", (event) => {
-//   event.preventDefault();
-
-//   let inputs = document.querySelectorAll("form input");
-//   let messageErreur = document.getElementById("messageErreur");
-//   let errorDetected = false;
-
-//   // Boucle pour vérifier chaque input
-//   inputs.forEach((input) => {
-//     if (input.value === "") {
-//       errorDetected = true;
-//     }
-//   });
-
-//   if (errorDetected) {
-//     messageErreur.textContent = "Erreur : certains champs sont vides.";
-//   } else {
-//     messageErreur.textContent = ""; // Efface le message d'erreur
-//     messageConfirmation.textContent = "Merci ! Votre réservation a été reçue.";
-//   }
-// });
