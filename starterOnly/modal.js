@@ -24,19 +24,29 @@ function launchModal() {
 const closeBtn = document.querySelector(".close");
 const modal = document.querySelector(".bground");
 
+
+let form = document.querySelector("form");
+
 // Ajoute un gestionnaire d'événement pour la croix
 closeBtn.addEventListener("click", () => {
- 
   modal.style.display = "none"; // Ferme la modale en la cachant
-  
+
+  form.reset();
+  afficherMessageErreur(inputPrenom)
+  afficherMessageErreur(inputNom);
+  afficherMessageErreurRadio(inputBtnRadio);
+  afficherMessageErreur(inputBirthDate);
+  afficherMessageErreurCheckBox(inputCondition);
+  afficherMessageErreur(inputEmail);
+  afficherMessageErreur(inputTournoi);
 });
 
 //ferme le formulaire//
-setupCloseButton()
+// setupCloseButton()
 
 //*pour les messages de validation*//
 
-let form = document.querySelector("form");
+
 
 let inputPrenom = document.getElementById("first");
 let inputNom = document.getElementById("last");
@@ -46,32 +56,25 @@ let inputTournoi = document.getElementById("quantity");
 let inputBtnRadio = document.querySelectorAll("input[type=radio]");
 let inputCondition = document.getElementById("checkbox1");
 
+
+
+
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-
   let formulaireValide = true;
 
-  const closeBtn = document.querySelector("#popup .close");
-  const popup = document.querySelector("#popup");
-
-  closeBtn.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
-
   if (!verifierInputText(inputPrenom)) {
-   
     afficherMessageErreur(
       inputPrenom,
       "le champ prénom doit avoir au moins deux caracteres. "
     );
     formulaireValide = false;
   } else {
-    console.log("Prénom valide :", inputPrenom.value);
+    
     afficherMessageErreur(inputPrenom);
   }
 
-  
   if (!verifierInputText(inputNom)) {
     afficherMessageErreur(
       inputNom,
@@ -82,10 +85,9 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputNom);
   }
 
-  
   if (!verifierInputEmail(inputEmail)) {
     afficherMessageErreur(inputEmail, "Votre Email n'est pas valide.");
-    console.log("erreur")
+   
     formulaireValide = false;
   } else {
     afficherMessageErreur(inputEmail);
@@ -98,7 +100,6 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputBirthDate);
   }
 
-  
   if (!verifierInputTournoi(inputTournoi)) {
     afficherMessageErreur(inputTournoi, "il doit etre inferieure a 99");
     formulaireValide = false;
@@ -106,7 +107,6 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreur(inputTournoi);
   }
 
- 
   if (!verifierInputBtnRadio(inputBtnRadio)) {
     afficherMessageErreurRadio(
       inputBtnRadio,
@@ -117,10 +117,7 @@ form.addEventListener("submit", (event) => {
     afficherMessageErreurRadio(inputBtnRadio);
   }
 
-  
-
   if (!verifierCondition()) {
-   
     afficherMessageErreurCheckBox(
       inputCondition,
       "Vous devez accepter les conditions d'utilisation."
@@ -129,24 +126,13 @@ form.addEventListener("submit", (event) => {
   }
 
   if (formulaireValide) {
-    
     afficherValidationFormulaire();
-    // Supprimez les messages d'erreur pour les champs valides
-    afficherMessageErreur(inputPrenom);
-    afficherMessageErreur(inputNom);
-    afficherMessageErreur(inputEmail);
-    afficherMessageErreur(inputBirthDate);
-    afficherMessageErreur(inputTournoi);
-    afficherMessageErreurRadio(inputBtnRadio);
-    afficherMessageErreurCheckBox(inputCondition);
   }
-  
-
 });
 
 function verifierInputText(input) {
   let valeur = input.value.trim();
-  
+
   if (valeur.length >= 2) {
     input.classList.remove("invalid"); // Retire 'invalid' si le champ est valide
     return true;
@@ -157,36 +143,27 @@ function verifierInputText(input) {
 }
 
 function afficherMessageErreur(input, message = "") {
-
-
   let divParent = input.closest("div");
-  
 
   let messageExist = divParent.querySelector("span");
   if (messageExist) {
     messageExist.remove();
   }
 
-  if (message ) {
+  if (message) {
     input.classList.add("invalid"); // Ajouter un contour rouge
     let messageErreur = document.createElement("span");
     messageErreur.style.color = "red";
     messageErreur.textContent = message;
-    divParent.appendChild(messageErreur);  
-  }
-
-  else {
+    divParent.appendChild(messageErreur);
+  } else {
     input.classList.remove("invalid"); // Retirer le contour rouge
-    console.log(`${input.id} : Classe 'invalid' retirée`);
+    
   }
 }
 
 function afficherMessageErreurCheckBox(cb, message = "") {
- 
-
-
   let divParent = cb.closest("div");
-
 
   let messageExist = divParent.querySelector(".messageErreur");
   if (messageExist) {
@@ -211,8 +188,6 @@ function afficherMessageErreurCheckBox(cb, message = "") {
 }
 
 function afficherMessageErreurRadio(rb, message = "") {
-  
-
   // Trouver le conteneur parent des boutons radio
   let divParent = rb[0].closest("div");
 
@@ -231,44 +206,37 @@ function afficherMessageErreurRadio(rb, message = "") {
 }
 
 function verifierInputEmail(input) {
-
   valeur = input.value;
 
-  let regexEmail =  /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  let regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   if (regexEmail.test(valeur)) {
-    
     return true; // L'email est valide
   } else {
-    afficherMessageErreur(input,"adresse email invalide")
-    
-    return false; // L'email est invalide 
+    afficherMessageErreur(input, "adresse email invalide");
+
+    return false; // L'email est invalide
   }
 }
 
-
-
 function verifierInputBirthDate(value) {
   if (value === "") {
-   
     document.getElementById("birthdate").classList.add("invalid");
     return false; // Retourne false si le champ est vide
   }
 
-  
   return true; // Retourne true si une date est saisie
 }
 
 function verifierInputTournoi(input) {
   let valeur = parseInt(input.value); // Convertir la valeur en nombre
- 
 
   if (valeur >= 0 && valeur <= 99) {
     input.classList.remove("invalid");
-   
+
     return true; // Retourner true si valide
   } else {
     input.classList.add("invalid"); // Ajouter un contour rouge
-    
+
     return false; // Retourner false si invalide
   }
 }
@@ -276,7 +244,6 @@ function verifierInputTournoi(input) {
 function verifierInputBtnRadio(input) {
   for (let i = 0; i < input.length; i++) {
     if (input[i].checked) {
-    
       return true;
     }
   }
@@ -287,7 +254,6 @@ function verifierInputBtnRadio(input) {
 function verifierCondition() {
   let checkbox1 = document.getElementById("checkbox1");
   let checkbox2 = document.getElementById("checkbox2");
-
 
   if (!checkbox1.checked) {
     return false; // Ne pas valider le formulaire si checkbox1 n'est pas cochée
@@ -304,7 +270,6 @@ function afficherValidationFormulaire() {
 
   // Vérifie si les éléments requis existent
   if (!modal || !closeBtn) {
-  
     return false;
   } else {
     form.reset(); //vide le formulaire
@@ -317,49 +282,39 @@ function afficherValidationFormulaire() {
       "Merci pour votre inscription";
   }
 }
+
+// Fonction pour fermer la popup de confirmation
 function closePopup() {
-  document.getElementById("popup").style.display = "none";
-
+  const popup = document.getElementById("popup");
+  popup.style.display = "none";
 }
 
-function setupCloseButton() {
-  const closeBtn = document.querySelector(".close");
-  const form = document.querySelector("form");
 
-  closeBtn.addEventListener("click", () => {
-    form.reset();
 
-    afficherMessageErreur(inputNom)
-    afficherMessageErreur(inputBtnRadio)
-    afficherMessageErreur(inputBirthDate)
-    afficherMessageErreur(inputCondition)
-    afficherMessageErreur(inputEmail)
-    afficherMessageErreur(inputTournoi)
-    
 
-  });
-}
-
-// permet d avertir que le champs est mal rempli avant d entamer un autre champ//
-
-document.getElementById("first").addEventListener("blur", (e) => {
+inputPrenom.addEventListener("blur", (e) => {
   if (verifierInputText(e.target)) {
     afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
-    afficherMessageErreur(e.target, "Le champ prénom doit avoir au moins deux caractères.");
+    afficherMessageErreur(
+      e.target,
+      "Le champ prénom doit avoir au moins deux caractères."
+    );
   }
 });
 
-document.getElementById("last").addEventListener("blur", (e) => {
+inputNom.addEventListener("blur", (e) => {
   if (verifierInputText(e.target)) {
     afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
-    afficherMessageErreur(e.target, "Le champ nom doit avoir au moins deux caractères.");
+    afficherMessageErreur(
+      e.target,
+      "Le champ nom doit avoir au moins deux caractères."
+    );
   }
 });
 
-
-document.getElementById("email").addEventListener("blur", (e) => {
+inputEmail.addEventListener("blur", (e) => {
   if (verifierInputEmail(e.target)) {
     afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
@@ -367,7 +322,7 @@ document.getElementById("email").addEventListener("blur", (e) => {
   }
 });
 
-document.getElementById("birthdate").addEventListener("blur", (e) => {
+inputBirthDate.addEventListener("blur", (e) => {
   if (verifierInputBirthDate(e.target.value)) {
     afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
@@ -375,24 +330,21 @@ document.getElementById("birthdate").addEventListener("blur", (e) => {
   }
 });
 
-
-
-document.getElementById("quantity").addEventListener("blur", (e) => {
+inputTournoi.addEventListener("blur", (e) => {
   if (verifierInputTournoi(e.target)) {
     afficherMessageErreur(e.target); // Supprime le message d'erreur si valide
   } else {
-    afficherMessageErreur(e.target, "Le nombre doit être compris entre 0 et 99.");
+    afficherMessageErreur(
+      e.target,
+      "Le nombre doit être compris entre 0 et 99."
+    );
   }
 });
 
+inputBtnRadio.forEach((radio) => {
+  radio.addEventListener("click", (e) => {
+    afficherMessageErreurRadio(inputBtnRadio);
+  });
+});
 
-
-
-
-// Appelez la fonction pour activer le comportement
-setupCloseButton();
-
-
-
-
-
+ 
