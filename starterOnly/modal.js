@@ -11,6 +11,7 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
+const closebtns = document.querySelectorAll(".btnCloseJs")
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -18,7 +19,7 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
-}
+} 
 
 // Sélectionne la croix et la modale
 const closeBtn = document.querySelector(".close");
@@ -289,7 +290,11 @@ function closePopup() {
   popup.style.display = "none";
 }
 
+closebtns.forEach((btn) => btn.addEventListener("click", () => {
+  closePopup();
 
+})
+);
 
 
 inputPrenom.addEventListener("blur", (e) => {
@@ -346,5 +351,6 @@ inputBtnRadio.forEach((radio) => {
     afficherMessageErreurRadio(inputBtnRadio);
   });
 });
+
 
  
